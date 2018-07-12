@@ -9,7 +9,8 @@
 #include <assert.h>
 #include "Chunk.hpp"
 
-#define DROP_UNDEFINED_TRUNKS false
+#define DROP_UNDEFINED_CHUNKS false
+#define HOLD_UNDEFINED_CHUNKS true
 #define PRINT_CHUNKS true
 
 class WavData {
