@@ -157,9 +157,6 @@ void WavData::addChunk(const Chunk& chunk){
 }
 
 void WavData::read(const std::string& fn, bool print){
-    // TODO : Reuse of the same object
-    // chunks_.clear();
-    // WavData();
     r_.open(fn, std::ifstream::binary | std::ifstream::ate);
     r_.seekg(0);
 
