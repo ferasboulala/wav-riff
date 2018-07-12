@@ -32,7 +32,7 @@ WavData::WavData(void) : riffSize_(4) {
     };
 
     std::vector<F_TYPE> fmtTypes = {
-        F_INT,F_INT,F_INT,F_INT,F_INT,F_INT,F_INT,F_INT,F_INT
+        F_INT,F_INT,F_INT,F_INT,F_INT,F_INT,F_INT,F_INT,F_INT, F_BYTE_ARRAY
     };
 
     // Only fmt has variable amounts of fields (not to be confused with variable size)
