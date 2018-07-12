@@ -81,6 +81,7 @@ std::ostream& operator<<(std::ostream& os, const Chunk& ck){
         }
         os << '\n';
     }
+    return os;
 }
 
 unsigned int Chunk::getSize(void) const{
