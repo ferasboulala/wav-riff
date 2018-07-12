@@ -158,6 +158,7 @@ void WavData::addChunk(const Chunk& chunk){
 
 void WavData::read(const std::string& fn, bool print){
     r_.open(fn, std::ifstream::binary | std::ifstream::ate);
+    assert(r_.is_open());
     r_.seekg(0);
 
     // RIFF check
@@ -235,6 +236,7 @@ void WavData::read(const std::string& fn, bool print){
 
 void WavData::write(const std::string& fn, bool writeUndefinedChunks){
     w_.open(fn, std::ios::binary);
+    assert(w_.is_open());
     // For every chunk, update the RIFF size
      for (auto it = chunks_.begin(); it != chunks_.end(); it++){
          auto fields = it->second->getAllFields();
@@ -258,7 +260,6 @@ void WavData::write(const std::string& fn, bool writeUndefinedChunks){
 }
 
 void WavData::writeBytes(const std::string& data){
-    assert(w_.is_open());
     w_.write((data.c_str()), data.size());
 }
 
@@ -281,7 +282,6 @@ void WavData::writeChunk(const std::string& name){
 }
 
 void WavData::readBytes(const unsigned int nBytes, std::string& data){
-    assert(r_.is_open());
     char* c = new char[nBytes];
     r_.read(c, nBytes);
     data.assign(c, nBytes);
