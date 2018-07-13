@@ -157,6 +157,7 @@ void WavData::addChunk(const Chunk& chunk){
 }
 
 void WavData::read(const std::string& fn, bool print){
+    resetData();
     r_.open(fn, std::ifstream::binary | std::ifstream::ate);
     assert(r_.is_open());
     r_.seekg(0);
