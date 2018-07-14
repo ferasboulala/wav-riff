@@ -15,7 +15,7 @@ int main(int argc, char** argv){
     short loudness = 25;
     bextChunk->getField("LoudnessValue")->val = WavData::toByte<short>(loudness);
 
-    // Adding a custom field of variable size to a custom chunk
+    // Adding a custom field to a custom Chunk
     Chunk myChunk("abcd");
     Chunk::Field myField;
     myField.name = "myField";
