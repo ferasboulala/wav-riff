@@ -9,7 +9,7 @@ int main(int argc, char** argv){
 
     WavData* wav = new WavData();
 
-    // Reading and chaning a value
+    // Reading and changing a value
     wav->read(argv[1]);
     auto bextChunk = wav->getChunk("bext");
     short loudness = 25;
@@ -26,7 +26,7 @@ int main(int argc, char** argv){
     myChunk.makeVariable();
     wav->addChunk(myChunk);
 
-    // Changing an existing variable field
+    // Changing an existing variable size field
     wav->getChunk("cart")->getField("TagText")->val = std::string("blahblah");
 
     // Writing all defined chunks and dropping the undefined ones
