@@ -241,14 +241,14 @@ void WavData::write(const std::string& fn, bool writeUndefinedChunks){
     // For every chunk, update the RIFF size
      for (auto it = chunks_.begin(); it != chunks_.end(); it++){
          auto fields = it->second->getAllFields();
-         // For every field of every chunk, update the chunk size.
+         // For every field of every chunk, update the chunk size first
          for (auto f = fields.begin(); f != fields.end(); f++){
              it->second->addToActualSize((*f)->nBytes);
          }
+         // Then update the RIFF size
          riffSize_ += it->second->getActualSize() + 4 + 4;
      }
     // RIFF and fmt first
-    // getChunk("RIFF")->addToActualSize(riffSize_);
     writeChunk("RIFF"); 
     writeChunk("fmt ");
     // non-PCM data must have a fact chunk

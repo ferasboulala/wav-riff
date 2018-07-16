@@ -59,7 +59,7 @@ public:
 
     /**
      * @brief Reads all defined chunks from a binary file and prints them out
-     * Chunks that are read but not defined are store as undefined chunks.
+     * Chunks that are read but not defined are stored as undefined chunks.
      * @param std::string filename
      * @param bool print or not
     */
