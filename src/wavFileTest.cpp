@@ -30,7 +30,7 @@ int main(int argc, char** argv){
     wav->getChunk("cart")->getField("TagText")->val = std::string("blahblah");
 
     // Writing all defined chunks and dropping the undefined ones
-    wav->write(argv[2], DROP_UNDEFINED_TRUNKS);
+    wav->write(argv[2], DROP_UNDEFINED_CHUNKS);
 
     // Reseting the current wav object and reading what we changed so far
     wav->resetData();
