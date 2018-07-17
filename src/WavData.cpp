@@ -257,6 +257,9 @@ void WavData::write(const std::string& fn, bool writeUndefinedChunks){
     if (toType<int>(chunks_["fmt "]->getField("FormatTag")->val) != WAVE_FORMAT_PCM) writeChunk("fact");
     for (auto it = chunks_.begin(); it != chunks_.end(); it++){
         if (it->first == "RIFF" || it->first == "fmt " || it->first == "fact") continue;
+        // If a chunk was not defined correctly (i.e. a field is 3 gb long in a 2 mb file)
+        // It is advised to drop undefined chunks because if the chunk is of variable size, 
+        // the field.data will be appended with '\0' and you will have a 3 gb file of mostly nothing.
         else if (writeUndefinedChunks || !chunks_[it->first]->isUndefined()) writeChunk(it->first);
     }
     w_.close();
@@ -275,7 +278,7 @@ void WavData::writeChunk(const std::string& name){
     for (auto it = fields.begin(); it != fields.end(); it++){
         // If the string's size is not the same size, empty values are appended
         int diff = (*it)->val.size() - (*it)->nBytes;
-        if (diff < 0){
+        if (diff < 0 && chunk->isVariable()){
             for (int i = 0; i < abs(diff); i++) (*it)->val.push_back('\0');
         }
         // If the string's size is greater, it does not respect the defined size
