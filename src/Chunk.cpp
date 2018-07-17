@@ -59,7 +59,9 @@ std::ostream& operator<<(std::ostream& os, const Chunk& ck){
         switch ((*it)->type) {
             case F_BYTE_ARRAY : {
                 for (int i = 0; i < (*it)->val.size(); i++){ 
-                    os << WavData::toType<unsigned int>(std::string(&((*it)->val[i]), 1)) << '-';
+                    const char c = WavData::toType<unsigned char>(std::string(&((*it)->val[i]), 1));
+                    if (c == '\0') continue;
+                    os << c << '-';
                 }
                 break;
             }
