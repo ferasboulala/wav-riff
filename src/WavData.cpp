@@ -152,16 +152,15 @@ std::map<std::string, std::shared_ptr<Chunk>> WavData::getAllChunks(void) const 
 }
 
 void WavData::addChunk(const Chunk& chunk){
-    assert(!exists(chunk.getChunkName()));
+    if (exists(chunk.getChunkName())) return;
     std::shared_ptr<Chunk> ch = std::make_shared<Chunk>(chunk);
     chunks_[chunk.getChunkName()] = ch;
 }
 
 void WavData::read(const std::string& fn, bool print){
     resetData();
-    r_.open(fn, std::ifstream::binary | std::ifstream::ate);
+    r_.open(fn, std::ifstream::binary);
     assert(r_.is_open());
-    r_.seekg(0);
 
     // RIFF check
     auto riff = chunks_["RIFF"];
@@ -278,7 +277,7 @@ void WavData::writeChunk(const std::string& name){
     for (auto it = fields.begin(); it != fields.end(); it++){
         // If the string's size is not the same size, empty values are appended
         int diff = (*it)->val.size() - (*it)->nBytes;
-        if (diff < 0 && chunk->isVariable()){
+        if (diff < 0){
             for (int i = 0; i < abs(diff); i++) (*it)->val.push_back('\0');
         }
         // If the string's size is greater, it does not respect the defined size
