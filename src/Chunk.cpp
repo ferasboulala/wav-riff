@@ -2,7 +2,7 @@
 #include "WavData.hpp"
 #include <assert.h>
 
-#define MAX_CHUNK_SIZE 2147483647
+#define MAX_CHUNK_SIZE 0xffffffff
 
 Chunk::Chunk(const std::string& name) 
     : size_(0), actualSize_(0), undefined_(false), variableSize_(false) 
