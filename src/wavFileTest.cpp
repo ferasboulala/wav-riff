@@ -10,7 +10,7 @@ int main(int argc, char** argv){
     WavData* wav = new WavData();
 
     // Reading and changing a value
-    wav->read(argv[1]);
+    wav->read(argv[1], PRINT_CHUNKS);
     auto bextChunk = wav->getChunk("bext");
     short loudness = 25;
     bextChunk->getField("LoudnessValue")->val = WavData::toByte<short>(loudness);
@@ -32,7 +32,7 @@ int main(int argc, char** argv){
     // Writing all defined chunks and dropping the undefined ones
     wav->write(argv[2], DROP_UNDEFINED_CHUNKS);
 
-    // Reseting the current wav object and reading what we changed so far
+    // // Reseting the current wav object and reading what we changed so far
     wav->resetData();
     wav->read(argv[2], PRINT_CHUNKS);
 

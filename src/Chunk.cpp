@@ -2,6 +2,8 @@
 #include "WavData.hpp"
 #include <assert.h>
 
+#define MAX_CHUNK_SIZE 2147483647
+
 Chunk::Chunk(const std::string& name) 
     : size_(0), actualSize_(0), undefined_(false), variableSize_(false) 
 {
@@ -23,6 +25,8 @@ void Chunk::addField(const struct Field f){
     std::shared_ptr<Field> f_p = std::make_shared<Field>(f);
     fields_.push_back(f_p);
     fieldMap_[f.name] = f_p;
+    long overflow = size_;
+    assert(overflow + f.nBytes < MAX_CHUNK_SIZE - 4 - 4);
     size_ += (f.nBytes);
     if (f.nBytes == 0) makeVariable();
 }

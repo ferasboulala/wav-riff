@@ -132,6 +132,15 @@ WavData::WavData(void) : riffSize_(4) {
     }
     cartChunk.makeVariable();
     addChunk(cartChunk);
+
+    Chunk dataChunk("data");
+    Chunk::Field dataField;
+    dataField.name = "data";
+    dataField.nBytes = 0;
+    dataField.type = F_NDEF;
+    dataChunk.addField(dataField);
+    dataChunk.makeVariable();
+    addChunk(dataChunk);
 }
 
 WavData::WavData(std::vector<Chunk> chunks) : WavData() {
@@ -166,21 +175,15 @@ void WavData::read(const std::string& fn, bool print){
     auto riff = chunks_["RIFF"];
     std::string data;
     readBytes(ID_SIZE, data);
-    if (data.compare(0, ID_SIZE, "RIFF")) throw "Not a RIFF compliant file format\n";
+    if (data.compare(0, ID_SIZE, "RIFF")) throw std::string("Not a RIFF compliant file format\n");
     readBytes(CK_SIZE_BYTES, data);
     unsigned int ckSize = toType<unsigned int>(data);
     readBytes(4, data);
-    if (data.compare(0, ID_SIZE, "WAVE")) throw "Not an adequate wav file format\n";
+    if (data.compare(0, ID_SIZE, "WAVE")) throw std::string("Not an adequate wav file format\n");
 
     // Reading chunks
     while (!r_.eof()){  
-        readBytes(ID_SIZE, data);
-        // data chunk is never not processed, only saved
-        if (data == "data"){
-            saveUndefinedChunk(data);
-            continue;
-        }
-        
+        readBytes(ID_SIZE, data);      
         // Chunk not recognized
         if (!exists(data)){
             if (data != "JUNK"){
@@ -223,14 +226,14 @@ void WavData::read(const std::string& fn, bool print){
                     continue;
                 }
                 else {
-                    throw "A defined field is variable but the chunk is not\n";
+                    throw std::string("A defined field is variable but the chunk is not\n");
                 }
             }
             count += size;
             readBytes(size, fields[i++]->val);
         }
 
-        if (print) std::cout << (*ck);
+        if (print && ck->getChunkName() != "data" && !ck->isUndefined()) std::cout << (*ck);
     }
     r_.close();
 }
@@ -277,7 +280,7 @@ void WavData::writeChunk(const std::string& name){
         // If the string's size is not the same size, empty values are appended
         int diff = (*it)->val.size() - (*it)->nBytes;
         if (diff < 0){
-            for (int i = 0; i < abs(diff); i++) (*it)->val.push_back('\0');
+            for (int i = 0; i < -diff; i++) (*it)->val.push_back('\0');
         }
         // If the string's size is greater, it does not respect the defined size
         else if (diff > 0) throw std::string("Size of the field\'s value is greater than the defined size\n");
@@ -303,7 +306,7 @@ void WavData::saveUndefinedChunk(const std::string& chunkId){
     f.type = F_NDEF;
     readBytes(f.nBytes, f.val);
     c.addField(f);
-    if (chunkId != "data") c.makeUndefined();
+    c.makeUndefined();
     addChunk(c);
 }
 
