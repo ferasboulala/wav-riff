@@ -332,4 +332,5 @@ void WavData::resetData(void){
         // Last field is put to 0 if the chunk is of variable size
         if (it->second->isVariable()) fields[fields.size()-1]->nBytes = 0;
     }
+    riffSize_ = 4;
 }
