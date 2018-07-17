@@ -32,8 +32,7 @@ int main(int argc, char** argv){
     // Writing all defined chunks and dropping the undefined ones
     wav->write(argv[2], DROP_UNDEFINED_CHUNKS);
 
-    // // Reseting the current wav object and reading what we changed so far
-    wav->resetData();
+    // // Reading what we changed so far
     wav->read(argv[2], PRINT_CHUNKS);
 
     delete wav;
