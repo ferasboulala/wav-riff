@@ -19,7 +19,9 @@ int main(int argc, char** argv){
     Chunk myChunk("abcd");
     Chunk::Field myField;
     myField.name = "myField";
-    myField.nBytes = 4; // nBytes must be >= val.size()
+    // If nBytes < val.size() and the chunk is not a variabled sized chunk, an error is raised
+    // If nBytes > val.size(), val string is appended with '\0' until the size is met
+    myField.nBytes = 4;
     myField.type = F_INT;
     myField.val = WavData::toByte<int>(1234);
     myChunk.addField(myField);
