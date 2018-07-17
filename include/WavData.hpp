@@ -117,8 +117,8 @@ public:
 
     /**
      * @brief Resets values of all fields of all Chunks except RIFF.
-     * Call this after read() if you want to read() again because variable fields
-     * must be set back to 0 in side (@ref Chunk.hpp)
+     * It is called with WavData::read(). One can call it to reuse the object
+     * after having read from a file.
     */
     void resetData(void);
 
