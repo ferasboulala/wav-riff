@@ -237,7 +237,7 @@ void WavData::read(const std::string& fn, bool print){
 }
 
 void WavData::write(const std::string& fn, bool writeUndefinedChunks){
-    assert(exists("RIFF") && exists("fmt ") && exists("data"));
+    assert(exists("RIFF") && exists("fmt ") && exists("data") && exists("fact"));
     w_.open(fn, std::ios::binary);
     assert(w_.is_open());
     // For every chunk, update the RIFF size
@@ -308,7 +308,7 @@ void WavData::saveUndefinedChunk(const std::string& chunkId){
 
 void WavData::removeChunk(const std::string& name) {
     // Must have chunks that should not be removed
-    assert(name != "RIFF" && name != "fmt" && name != "fact");
+    assert(name != "RIFF" && name != "fmt" && name != "fact" && name != "data");
     assert(exists(name));
     chunks_.erase(name);
 }
