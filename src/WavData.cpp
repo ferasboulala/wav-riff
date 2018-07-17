@@ -152,6 +152,7 @@ std::map<std::string, std::shared_ptr<Chunk>> WavData::getAllChunks(void) const 
 }
 
 void WavData::addChunk(const Chunk& chunk){
+    assert(!exists(chunk.getChunkName()));
     std::shared_ptr<Chunk> ch = std::make_shared<Chunk>(chunk);
     chunks_[chunk.getChunkName()] = ch;
 }
@@ -236,6 +237,7 @@ void WavData::read(const std::string& fn, bool print){
 }
 
 void WavData::write(const std::string& fn, bool writeUndefinedChunks){
+    assert(exists("RIFF") && exists("fmt ") && exists("data"));
     w_.open(fn, std::ios::binary);
     assert(w_.is_open());
     // For every chunk, update the RIFF size
