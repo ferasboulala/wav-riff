@@ -84,6 +84,16 @@ std::ostream &operator<<(std::ostream &os, const Chunk &ck) {
   return os;
 }
 
+void Chunk::resetChunk(void) {
+  actualSize_ = 0;
+  for (auto it = fields_.begin(); it != fields_.end(); it++) {
+    (*it)->val = std::string("");
+  }
+  if (variableSize_) {
+    fields_[fields_.size() - 1]->nBytes = 0;
+  }
+}
+
 unsigned int Chunk::getSize(void) const { return size_; }
 
 unsigned int Chunk::getActualSize(void) const { return actualSize_; }

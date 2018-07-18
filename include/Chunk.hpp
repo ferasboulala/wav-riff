@@ -126,6 +126,11 @@ public:
    */
   void makeVariable(void);
 
+  /**
+   * @brief Resets all fields of the chunk
+  */
+  void resetChunk(void);
+
 protected:
   bool checkSize(const unsigned int size) const;
   bool isVariable(void) const;

@@ -317,13 +317,6 @@ void WavData::resetData(void) {
   for (auto it = chunks_.begin(); it != chunks_.end(); it++) {
     if (it->first == "RIFF")
       continue;
-    it->second->addToActualSize(-it->second->getActualSize());
-    auto fields = it->second->getAllFields();
-    for (auto f = fields.begin(); f != fields.end(); f++) {
-      (*f)->val = std::string("");
-    }
-    // Last field is put to 0 if the chunk is of variable size
-    if (it->second->isVariable())
-      fields[fields.size() - 1]->nBytes = 0;
+    it->second->resetChunk();
   }
 }
